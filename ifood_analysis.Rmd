@@ -1,0 +1,81 @@
+#### *Configuración para mejorar la ejecución*
+```{r}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+### Cargar dataset
+```{r}
+ifood <- read.csv("ifood_enriched.csv", sep=",", header=TRUE)
+```
+### Mostrar las primeras filas
+```{r}
+head(ifood)
+```
+### Ver estructura del dataset
+```{r}
+str(ifood)
+```
+
+---
+
+### Resumen Estadístico General
+```{r}
+# Resumen de todas las variables
+summary(ifood)
+```
+
+---
+
+### Análisis de Variables Numéricas
+```{r}
+# Seleccionar variables numéricas
+numericas <- sapply(ifood, is.numeric)
+numericas <- names(ifood)[numericas]
+```
+```{r}
+# Histograma y boxplot para cada variable numérica
+for (var in numericas) {
+  cat("Variable -> ", var, "\n\n")
+  
+  # Histograma
+  hist(ifood[[var]], main=paste("Histograma de", var), col="skyblue", border="black")
+  
+  # Boxplot
+  boxplot(ifood[[var]], main=paste("Boxplot de", var), col="orange", horizontal=TRUE)
+  
+  # Tabla de frecuencias y resumen estadístico
+  
+  # Muestra solo los primeros 20 valores
+  
+  print(head(ifood[[var]], 20))
+  print(summary(ifood[[var]], 20))
+  cat("\n\n")
+}
+```
+
+---
+
+### Análisis de Variables Categóricas
+```{r}
+# Seleccionar variables categóricas
+categoricas <- sapply(ifood, function(x) is.factor(x) | is.character(x))
+categoricas <- names(ifood)[categoricas]
+
+# Análisis para cada variable categórica
+for (var in categoricas) {
+  cat("###", var, "\n\n")
+  
+  # Tabla de frecuencias
+  print(table(ifood[[var]]))
+  
+  # Gráfico de barras
+  barplot(table(ifood[[var]]), main=paste("Distribución de", var), col=rainbow(length(unique(ifood[[var]]))))
+  
+  # Gráfico de pastel
+  pie(table(ifood[[var]]), main=paste("Distribución de", var), col=rainbow(length(unique(ifood[[var]]))))
+}
+```
+
+
+
+
